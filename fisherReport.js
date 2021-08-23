@@ -29,7 +29,13 @@
     console.log(obj);
   }
 
-  function patch(moduleName, that, args, patchFunction, patchPath = ["default"]) {
+  function patch(
+    moduleName,
+    that,
+    args,
+    patchFunction,
+    patchPath = ["default"]
+  ) {
     if (args[0] == moduleName) {
       console.log(args);
 
@@ -55,8 +61,7 @@
 
           let lastKey = patchPath[patchPath.length - 1];
 
-          if (!ok || !current[lastKey])
-            continue;
+          if (!ok || !current[lastKey]) continue;
 
           debug(current);
 
@@ -78,7 +83,7 @@
 
   function patchMessageActions(origFunction, that, args) {
     // debugger;
-    
+
     // let res = require('react').jsx(require("MWV2MessageActions.bs").FocusRing.make, args[0]);
 
     let res = origFunction.apply(that, args);
@@ -150,8 +155,7 @@
 
     let res = origFunction.apply(that, args);
 
-    if (res?.type)
-      res.type = require("MWV2MessageActions.bs").ActionsRow.make;
+    if (res?.type) res.type = require("MWV2MessageActions.bs").ActionsRow.make;
 
     return res;
   }
@@ -161,18 +165,14 @@
 
     let res = origFunction.apply(that, args);
 
-    let b = require("fbt")._("Report");
+    let reportButtonTitle = require("fbt")._("Report");
 
-    let react = require('react');
+    let react = require("react");
 
     let message = args[0];
 
     let i = require("stylex");
-    i.inject(
-      ".kmwttqpk{margin-left:0}",
-      1,
-      ".kmwttqpk{margin-right:0}"
-    );
+    i.inject(".kmwttqpk{margin-left:0}", 1, ".kmwttqpk{margin-right:0}");
     i.inject(".l7ghb35v{margin-right:0}", 1, ".l7ghb35v{margin-left:0}");
     i.inject(".mx6bq00g{width:24px}", 1);
     i.inject(".mwtcrujb{height:24px}", 1);
@@ -247,61 +247,95 @@
     };
 
     let h = require("stylex");
-    
+
     h.inject(".az303tco{fill:var(--placeholder-icon)}", 1);
 
     let j = {
       icon: {
-        fill: "az303tco"
-      }
+        fill: "az303tco",
+      },
     };
 
-    let svgIconElem = react.jsx("g", {
-      strokeWidth: "1",
-      fillRule: "evenodd",
-      className: (h || (h = require("stylex")))(j.icon),
-      children: [
+    const svgIconMakeOrig = require("MDSReplyActionSvgIcon.bs").make;
+
+    const svgIconMakeNew = function () {
+      let res = svgIconMakeOrig.apply(this, arguments);
+
+      res.props.children.props.children = [
         react.jsx("path", {
-          d: "M243.225,333.382c-13.6,0-25,11.4-25,25s11.4,25,25,25c13.1,0,25-11.4,24.4-24.4C268.225,344.682,256.925,333.382,243.225,333.382z"
+          d: "M243.225,333.382c-13.6,0-25,11.4-25,25s11.4,25,25,25c13.1,0,25-11.4,24.4-24.4C268.225,344.682,256.925,333.382,243.225,333.382z",
         }),
         react.jsx("path", {
-          d: "M474.625,421.982c15.7-27.1,15.8-59.4,0.2-86.4l-156.6-271.2c-15.5-27.3-43.5-43.5-74.9-43.5s-59.4,16.3-74.9,43.4l-156.8,271.5c-15.6,27.3-15.5,59.8,0.3,86.9c15.6,26.8,43.5,42.9,74.7,42.9h312.8C430.725,465.582,458.825,449.282,474.625,421.982z M440.625,402.382c-8.7,15-24.1,23.9-41.3,23.9h-312.8c-17,0-32.3-8.7-40.8-23.4c-8.6-14.9-8.7-32.7-0.1-47.7l156.8-271.4c8.5-14.9,23.7-23.7,40.9-23.7c17.1,0,32.4,8.9,40.9,23.8l156.7,271.4C449.325,369.882,449.225,387.482,440.625,402.382z"
+          d: "M474.625,421.982c15.7-27.1,15.8-59.4,0.2-86.4l-156.6-271.2c-15.5-27.3-43.5-43.5-74.9-43.5s-59.4,16.3-74.9,43.4l-156.8,271.5c-15.6,27.3-15.5,59.8,0.3,86.9c15.6,26.8,43.5,42.9,74.7,42.9h312.8C430.725,465.582,458.825,449.282,474.625,421.982z M440.625,402.382c-8.7,15-24.1,23.9-41.3,23.9h-312.8c-17,0-32.3-8.7-40.8-23.4c-8.6-14.9-8.7-32.7-0.1-47.7l156.8-271.4c8.5-14.9,23.7-23.7,40.9-23.7c17.1,0,32.4,8.9,40.9,23.8l156.7,271.4C449.325,369.882,449.225,387.482,440.625,402.382z",
         }),
         react.jsx("path", {
-          d: "M237.025,157.882c-11.9,3.4-19.3,14.2-19.3,27.3c0.6,7.9,1.1,15.9,1.7,23.8c1.7,30.1,3.4,59.6,5.1,89.7c0.6,10.2,8.5,17.6,18.7,17.6c10.2,0,18.2-7.9,18.7-18.2c0-6.2,0-11.9,0.6-18.2c1.1-19.3,2.3-38.6,3.4-57.9c0.6-12.5,1.7-25,2.3-37.5c0-4.5-0.6-8.5-2.3-12.5C260.825,160.782,248.925,155.082,237.025,157.882z"
+          d: "M237.025,157.882c-11.9,3.4-19.3,14.2-19.3,27.3c0.6,7.9,1.1,15.9,1.7,23.8c1.7,30.1,3.4,59.6,5.1,89.7c0.6,10.2,8.5,17.6,18.7,17.6c10.2,0,18.2-7.9,18.7-18.2c0-6.2,0-11.9,0.6-18.2c1.1-19.3,2.3-38.6,3.4-57.9c0.6-12.5,1.7-25,2.3-37.5c0-4.5-0.6-8.5-2.3-12.5C260.825,160.782,248.925,155.082,237.025,157.882z",
         }),
-      ],
-    })
+      ];
+
+      res.props.viewBox = "-50 -30 600 600";
+      res.props.tooltip = reportButtonTitle;
+
+      // res.type = svgIconMakeNew;
+
+      debug({ svgIconElemComponent: res });
+
+      return res;
+    };
+
+    let svgIconElem = react.jsx(svgIconMakeNew, {});
+
+    // svgIconElem.type = svgIconMakeNew;
 
     debug({ svgIconElem });
-    
-    let elem = react.jsx(require("MWPTooltip.react"), {
-      tooltip: b,
-      align: "middle",
-      position: "above",
-      children: react.jsx("div", {
-        className: (i || (i = require("stylex")))(k.action),
-        children: react.jsx(require("CometPressable.react"), {
-          "aria-label": b,
-          testid: "messenger_report_menu_button",
-          onPress: function (a) {
-            console.log("Report button pressed", message);
-          },
-          overlayDisabled: !0,
-          children: react.jsx("div", {
-            className: i(k.icon),
-            children: react.jsx("svg", {
-              width: "22px",
-              height: "22px",
-              viewBox: "-50 -30 600 600",
-              children: svgIconElem,
-            }),
-          }),
-        }),
-      }),
-    });
 
-    // let elem = react.createElement('div', {}, 'abc');
+    const MVW2ReplyButtonMakeOrig = require("MWV2ReplyButton.bs").make;
+
+    const MVW2ReplyButtonMakeNew = function() {
+      return MVW2ReplyButtonMakeOrig.apply(this, arguments);
+      // let args = arguments;
+      // let res = MVW2ReplyButtonMakeOrig.apply(this, arguments);
+
+      // res.props.children.props.children.props.testid =
+        // "messenger_report_menu_button";
+      // res.props.children.props.children.props.onPress = function (event) {
+      //   console.log("Report button pressed", args[0]);
+      // };
+      // res.props.tooltip = reportButtonTitle;
+      // res.props.children.props.children.props["aria-label"] = reportButtonTitle;
+      // res.props.children.props.children.props.children = svgIconElem;
+
+      debug({ MVW2ReplyButtonComponent: res });
+
+      return res;
+    };
+
+    let elem = react.jsx(MVW2ReplyButtonMakeNew, { message: args[0].message });
+
+    // elem.type = MVW2ReplyButtonMakeNew;
+
+    // let elem = react.jsx(require("MWPTooltip.react"), {
+    //   tooltip: reportButtonTitle,
+    //   align: "middle",
+    //   position: "above",
+    //   children: react.jsx("div", {
+    //     className: (i || (i = require("stylex")))(k.action),
+    //     children: react.jsx(require("CometPressable.react"), {
+    //       "aria-label": reportButtonTitle,
+    //       testid: "messenger_report_menu_button",
+    //       onPress: function (a) {
+    //         console.log("Report button pressed", message);
+    //       },
+    //       overlayDisabled: !0,
+    //       children: react.jsx("div", {
+    //         className: i(k.icon),
+    //         children: svgIconElem
+    //       }),
+    //     }),
+    //   }),
+    // });
+
+    debug({ elem });
 
     let buffer = [];
 
@@ -315,6 +349,8 @@
       res.props.children.push(buffer[i]);
 
     debug({ actionsRowRes: res });
+
+    // debug({ actionsRowRes: res });
 
     return res;
   }
