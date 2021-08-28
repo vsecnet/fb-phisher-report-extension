@@ -1,0 +1,14 @@
+{
+  "appName": {
+    "message": "FB Fisher Report"
+  },
+  "appDescription": {
+    "message": "FB Fisher Report"
+  },
+  "reportMessage": {
+    "message": "Reported successfully!"
+  },
+  "toggleExtension": {
+    "message": "Toggle FB Fisher Report"
+  }
+}

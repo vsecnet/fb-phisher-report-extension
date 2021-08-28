@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+$color-blue__big: #4267B2;
+$color-blue__light: #0078FF;
+$color-main: #303437;
+
+@mixin icon($pathPicture, $width, $height) {
+  background: url($pathPicture) no-repeat center center;
+  width: $width;
+  height: $height;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+@mixin  responsive($breakpoint) {
+  @if $breakpoint == tab-normal{
+    @media screen and (min-width: 540px){@content};  //500px
+  }
+  @if $breakpoint == tab-port{
+    @media screen and (min-width: 768px){@content};  //768px
+  }
+  @if $breakpoint == tab-land{
+    @media screen and (min-width: 1024px){@content}; //1024px
+  }
+  @if $breakpoint == tab-small{
+    @media screen and (max-width: 370px){@content};  //350px
+  }
+}
+
+*{
+  margin: 0;
+  padding: 0;
+}
+body{
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: $color-main;
+  font-weight: 500;
+}
+a{
+  text-decoration: none;
+}
+
+ul{
+  display: block;
+  margin: 0;
+  padding: 0;
+
+  li{
+    list-style: none;
+  }
+}
