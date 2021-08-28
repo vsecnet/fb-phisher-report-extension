@@ -29,7 +29,7 @@ function getStorageValue(key) {
 }
 
 window.addEventListener("messageReport", async (event) => {
-  console.log(event);
+  debug(event);
   let { detail } = event;
 
   await sendMessageToBackground("messageReport", detail);
@@ -79,7 +79,7 @@ async function generateScript() {
 
     function debug(obj) {
       return;
-      //console.log(obj);
+      //debug(obj);
     }
 
     function patch(
@@ -202,7 +202,7 @@ async function generateScript() {
             testid: "messenger_report_menu_button",
             onPress: function (a) {
               sendMessageToContentScript('messageReport', message.message.g);
-              console.log("Report button pressed", message);
+              debug("Report button pressed", message);
             },
             overlayDisabled: !0,
             children: react.jsx("div", {
@@ -238,7 +238,7 @@ async function generateScript() {
       let trayButtons = args[0].trayButtons;
       let react = require('react');
 
-      console.log({ trayButtons });
+      debug({ trayButtons });
 
       let actionTrayStyles = require('MWChatComposerActionTrayItems.bs').styles;
 
@@ -258,7 +258,7 @@ async function generateScript() {
 
         let res = iconMake.apply(this, arguments);
 
-        console.log({ iconRes: res });
+        debug({ iconRes: res });
 
         return res;
       }
@@ -290,7 +290,7 @@ async function generateScript() {
             onPress: function() {
               flipActivated();
               forceUpdate();
-              console.log('Activate button clicked')
+              debug('Activate button clicked')
             },
             testid: "activate_button",
           })
@@ -304,7 +304,7 @@ async function generateScript() {
       //elem.key = 'activate';
       //elem.props.children.type = MWChatComposerAudioButtonMakeNew;
       
-      console.log({ elem });
+      debug({ elem });
       
       //args[0].trayButtons.push(trayButtons[trayButtons.length - 1]);
       
