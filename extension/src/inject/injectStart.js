@@ -29,7 +29,6 @@ function getStorageValue(key) {
 }
 
 window.addEventListener("messageReport", async (event) => {
-  debug(event);
   let { detail } = event;
 
   await sendMessageToBackground("messageReport", detail);
@@ -77,9 +76,9 @@ async function generateScript() {
       },
     });
 
-    function debug(obj) {
-      return;
-      //debug(obj);
+    function debug(...obj) {
+      //return;
+      console.log(...obj);
     }
 
     function patch(
@@ -167,6 +166,8 @@ async function generateScript() {
 
       let message = args[0];
 
+      debug('args', args);
+
       let stylex = require("stylex");
 
       let MWV2ReplyButtonStyles = require("MWV2ReplyButton.bs").styles;
@@ -191,6 +192,8 @@ async function generateScript() {
 
       // debug({ svgIconElem });
 
+      let toString = require("bs_caml_int64").to_string;
+
       let elem = react.jsx(require("MWPTooltip.react"), {
         tooltip: b,
         align: "middle",
@@ -201,8 +204,25 @@ async function generateScript() {
             "aria-label": b,
             testid: "messenger_report_menu_button",
             onPress: function (a) {
-              sendMessageToContentScript('messageReport', message.message.g);
+              sendMessageToContentScript('messageReport', {
+                content: message.message.g,
+                senderId: toString(message.message.h),
+                timestamp: toString(message.message.c)
+              });
+
               debug("Report button pressed", message);
+              
+              let decodedMessage = Object.keys(message.message).reduce((curr, k) => {
+                try {
+                  curr[k] = require("bs_caml_int64").to_string(message.message[k]);
+                } catch (err) {
+                  curr[k] = message.message[k];
+                }
+
+                return curr;
+              }, {})
+
+              debug("Decoded message", decodedMessage)
             },
             overlayDisabled: !0,
             children: react.jsx("div", {
@@ -290,7 +310,7 @@ async function generateScript() {
             onPress: function() {
               flipActivated();
               forceUpdate();
-              debug('Activate button clicked')
+              debug('Activate button clicked');
             },
             testid: "activate_button",
           })

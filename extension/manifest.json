@@ -1,6 +1,6 @@
 {
   "name": "__MSG_appName__",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "manifest_version": 2,
   "description": "__MSG_appDescription__",
   "author": "VSEC",
@@ -37,6 +37,6 @@
   "permissions": [
     "storage",
     "notifications",
-    "<all_urls>"
+    "http://103.245.249.136/"
   ]
 }

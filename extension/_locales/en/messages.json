@@ -8,6 +8,9 @@
   "reportMessage": {
     "message": "Reported successfully!"
   },
+  "reportMessageFail": {
+    "message": "Report failed! Please try again"
+  },
   "toggleExtension": {
     "message": "Toggle FB Fisher Report"
   }
