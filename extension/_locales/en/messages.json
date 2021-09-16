@@ -1,9 +1,9 @@
 {
   "appName": {
-    "message": "FB Fisher Report"
+    "message": "FB Phisher Report"
   },
   "appDescription": {
-    "message": "FB Fisher Report"
+    "message": "FB Phisher Report"
   },
   "reportMessage": {
     "message": "Reported successfully!"
@@ -12,6 +12,6 @@
     "message": "Report failed! Please try again"
   },
   "toggleExtension": {
-    "message": "Toggle FB Fisher Report"
+    "message": "Toggle FB Phisher Report"
   }
 }

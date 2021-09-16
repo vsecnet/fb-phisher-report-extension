@@ -13,8 +13,8 @@ chrome.runtime.onMessage.addListener(async function (message, sender, sendRespon
 
     console.log(urls);
 
-    let result = await fetch("http://103.245.249.136/phishingreport/submit", {
-      method: 'POST',
+    await fetch("https://fraud.vsec.vn/phishingreport/submit", {
+      method: "POST",
       body: JSON.stringify({
         source: "FacebookMessenger",
         sender: senderId,
@@ -24,25 +24,26 @@ chrome.runtime.onMessage.addListener(async function (message, sender, sendRespon
       headers: {
         "Content-Type": "application/json",
       },
-    }).then(res => res.json())
-    .then(result => {
-      console.log(result);
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
 
-      chrome.notifications.create({
-        message: chrome.i18n.getMessage("reportMessage"),
-        title: chrome.i18n.getMessage("appName"),
-        type: "basic",
-        iconUrl: chrome.extension.getURL("icons/icon_128.png"),
+        chrome.notifications.create({
+          message: chrome.i18n.getMessage("reportMessage"),
+          title: chrome.i18n.getMessage("appName"),
+          type: "basic",
+          iconUrl: chrome.extension.getURL("icons/icon_128.png"),
+        });
+      })
+      .catch((err) => {
+        chrome.notifications.create({
+          message: chrome.i18n.getMessage("reportMessageFail"),
+          title: chrome.i18n.getMessage("appName"),
+          type: "basic",
+          iconUrl: chrome.extension.getURL("icons/icon_128.png"),
+        });
       });
-    })
-    .catch(err => {
-      chrome.notifications.create({
-        message: chrome.i18n.getMessage("reportMessageFail"),
-        title: chrome.i18n.getMessage("appName"),
-        type: "basic",
-        iconUrl: chrome.extension.getURL("icons/icon_128.png"),
-      });
-    })
   }
 });
 
