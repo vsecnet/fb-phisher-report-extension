@@ -46,6 +46,8 @@ async function generateScript() {
       activated: ${await getStorageValue("activated")}
     }
 
+    let arr = [];
+
     function flipActivated() {
       config.activated = !config.activated;
       sendMessageToContentScript('flipActivated');
@@ -64,7 +66,12 @@ async function generateScript() {
 
     Object.defineProperty(window, "__d", {
       get() {
-        return this.___d;
+        if (this.___d)
+          return this.___d;
+
+        return function() {
+          arr.push(arguments);
+        }
       },
       set(val) {
         this.___d = function () {
@@ -73,6 +80,13 @@ async function generateScript() {
 
           return val.apply(this, arguments);
         };
+
+        arr = arr.reverse();
+
+        for (let args of arr)
+          this.___d.apply(this, args);
+
+        arr = [];
       },
     });
 
