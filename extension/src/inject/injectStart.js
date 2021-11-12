@@ -127,6 +127,8 @@ async function generateScript() {
 
             const origFunction = current[lastKey];
 
+            console.log(moduleName, patchPath);
+
             current[lastKey] = function () {
               return patchFunction(origFunction, that, arguments);
             };
@@ -165,6 +167,14 @@ async function generateScript() {
       let res = origFunction.apply(that, args);
 
       if (res?.type) res.type = require("MWV2MessageActions.bs").ActionsRow.make;
+
+      return res;
+    }
+
+    function patchMessageActionsActionsList(origFunction, that, args) {
+      let res = origFunction.apply(that, args);
+
+      debug({ actionsList: res });
 
       return res;
     }
@@ -208,7 +218,7 @@ async function generateScript() {
 
       let toString = require("bs_caml_int64").to_string;
 
-      let elem = react.jsx(require("MWPTooltip.react"), {
+      let elem = react.jsx(require("MWTooltip.react"), {
         tooltip: b,
         align: "middle",
         position: "above",
@@ -349,6 +359,29 @@ async function generateScript() {
       return res;
     }
 
+    function patchMessageRowActions(origFunction, that, args) {
+      // return require('React').createElement('b', null, 'Hello');
+
+      let res = origFunction.apply(that, args);
+
+      debug({ res });
+
+      return res;
+    }
+
+    function patchMessageListRowActions(origFunction, that, args) {
+      // return require('React').createElement('b', null, 'Hello');
+
+      let res = origFunction.apply(that, args);
+
+      if (res?.props?.children?.props?.children?.type)
+        res.props.children.props.children.type = require('MWMessageRowActions.bs').ActionsList.make;
+
+      debug({ messageListRowActions: res });
+
+      return res;
+    }
+
     const patches = [
       {
         moduleName: "MWV2MessageActions.bs",
@@ -369,6 +402,21 @@ async function generateScript() {
         moduleName: "MWV2MessageActions.bs",
         f: patchMessageActionsRow,
         patchPath: ["ActionsRow", "make"],
+      },
+      {
+        moduleName: "MWMessageRowActions.bs",
+        f: patchMessageActionsRow,
+        patchPath: ["ActionsList", "make"],
+      },
+      {
+        moduleName: "MWMessageRowActions.bs",
+        f: patchMessageRowActions,
+        patchPath: ["make"],
+      },
+      {
+        moduleName: "MWPBaseMessageListRowActions.bs",
+        f: patchMessageListRowActions,
+        patchPath: ["Container", "make"],
       },
       {
         moduleName: "MWChatComposerActionTray.bs",
